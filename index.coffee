@@ -7,7 +7,6 @@ rss = require 'rss'
 intl = require 'intl'
 cronJob = require('cron').CronJob
 
-deals = []
 xml = []
 feed = new rss title: 'ニンテンドーeショップのセール情報'
 nf = new intl.NumberFormat 'ja-JP'
@@ -22,6 +21,7 @@ app.get '/', (req, res) ->
     json: -> res.send deals
 
 do main = ->
+  deals = []
   url = 'http://search1.nintendo.co.jp/search/software.php?ac=search&release[start]=0&release[end]=21&hard[2]=wiiU_dl&hard[9]=3dsDl&sales_date_type=old&limit=10000'
   request.get(url).pipe(iconv.decodeStream('shift_jis')).collect (err, body) ->
     $ = cheerio.load body
@@ -49,6 +49,7 @@ do main = ->
           date: deal.eta
           categories: []
       xml = do feed.xml
+      @deals = deals
 
 do (new cronJob '0 0 */8 * * *', -> do main).start
 app.listen process.env.PORT or '3000'

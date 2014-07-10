@@ -1,7 +1,8 @@
 mixin deals(deals)
   for deal in deals
     tr
-      td= deal.title
+      td
+        a(href=deal.url, target='_blank')= deal.title
       td= deal.description
       td= deal.etaJa
 

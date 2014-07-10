@@ -1,8 +1,20 @@
 mixin deals(deals)
   for deal in deals
-    tr
+    tr(style='height: 42px;')
       td
         a(href=deal.url, target='_blank')= deal.title
+        if deal.id
+          &nbsp
+          button.btn.btn-default.btn-xs(type='button', data-toggle='modal', data-target='#qrcode-' + deal.id)
+            span.glyphicon.glyphicon-qrcode
+          .modal.fade(id='qrcode-' + deal.id, tabindex='-1', role='dialog')
+            .modal-dialog.modal-sm
+              .modal-content
+                .modal-body
+                  img.img-responsive(src='http://www.nintendo.co.jp/3ds/eshop/imgQR/' + deal.id + '.gif', style='margin: 0 auto;')
+                  &nbsp
+                  button.close(type='button', data-dismiss='modal') &times
+
       td= deal.description
       td= deal.etaJa
 
@@ -30,6 +42,10 @@ html
         .panel-heading
           h3.panel-title 使い方
         .panel-body Content-Typeに応じた内容が表示されます。ブラウザやフィードリーダーからアクセスしてください。
+          br
+          button.btn.btn-default.btn-xs(type='button')
+            span.glyphicon.glyphicon-qrcode
+          をクリックで3DS向けQRコードを表示します。
 
       .page-footer(style='text-align: center;')
         p 作った人:&nbsp

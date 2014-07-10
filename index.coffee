@@ -33,13 +33,14 @@ do main = ->
         if $(elem).find('.datePrice').text().search(/→/) > 0
           deals.push
             title: $(elem).find('.title').text()
-            url: $(elem).find('.title').find('a').attr('href')
+            url: url = $(elem).find('.title').find('a').attr('href')
             regularPrice: regularPrice = $(elem).find('.labelFont').text().match(/((\d|,)+)円/)[1].split(',').join('')
             discountPrice: discountPrice = $(elem).find('.price').text().split(',').join('')
             discountPct: discountPct = Math.round 100 - (discountPrice / regularPrice) * 100
             eta: eta = moment(("0#{v}".slice(-2) for v, k in $(elem).find('.labelFont').text().match(/～(\d{4})\.(\d{1,2})\.(\d{1,2})\s(\d{1,2}):(\d{1,2})/) when k > 0).join('-') + '+09:00', 'YY-MM-DD-HH-mmZ').format()
             etaJa: moment(eta).format 'LLL'
             description: "¥#{nf.format regularPrice} \u2192 ¥#{nf.format discountPrice} #{discountPct}%オフ"
+            id: url.match(/3ds\/eshop\/(\w+)\/index.html/)?[1]
 
       for deal, key in deals
         feed.items.unshift
